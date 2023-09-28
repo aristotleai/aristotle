@@ -1,0 +1,7 @@
+DB_NAME = "staging"
+USERS = "users"
+PROVIDERS = "providers"
+TAKERS = "takers"
+JOBS = "jobs"
+SERVERS = "servers"
+APP_INFO = "appinfo"
