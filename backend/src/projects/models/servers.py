@@ -7,8 +7,6 @@ from pydantic import BaseModel, Field
 
 class ServerCreateBaseModel(MongoModel):
     server_code: str
-    provider_code: str
-    provider_name: str
     memory_gb: int
     num_cores: int
     bandwidth_gbps: int
@@ -16,6 +14,8 @@ class ServerCreateBaseModel(MongoModel):
     is_available: bool
 
 class ServerCreateModel(ServerCreateBaseModel):
+    provider_code: str
+    provider_name: str
     created_by: Optional[str] = None
     created_at : datetime = datetime.now()
     is_updated : Optional[bool] = False

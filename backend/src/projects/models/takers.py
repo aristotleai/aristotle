@@ -6,10 +6,10 @@ from pydantic import BaseModel, Field
 
 
 class TakerCreateBaseModel(MongoModel):
-    taker_code: str
     taker_name: str
 
 class TakerCreateModel(TakerCreateBaseModel):
+    taker_code: str
     funded_jobs: Optional[int] = 0
     is_active: Optional[bool] = True
     created_at : datetime = datetime.now()

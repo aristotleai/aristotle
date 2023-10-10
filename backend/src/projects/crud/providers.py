@@ -19,13 +19,15 @@ class ProviderCollection:
     async def create_provider(
         self,
         provider_details: ProviderCreateBaseModel,
+        username: str
     ) -> any:
         try:
-            existing_provider = await self.get_provider_by_code(provider_code=provider_details.provider_code)
+            existing_provider = await self.get_provider_by_code(provider_code=username)
             if existing_provider is not None:
                 return None
 
             provider_details_full = ProviderCreateModel(
+                provider_code=username,
                 **provider_details.dict()
             )
 

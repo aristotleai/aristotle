@@ -12,14 +12,15 @@ router = APIRouter()
 
 @router.post(
     "/v1/providers/create_provider",
-    dependencies=[Security(get_current_active_user, scopes=["admin:write"])],
+    dependencies=[Security(get_current_active_user, scopes=["loggedin:write"])],
 )
 async def create_provider(
-    provider_details: ProviderCreateBaseModel
+    provider_details: ProviderCreateBaseModel,
+    current_user: str = Security(get_current_active_user, scopes=["loggedin:write"])
 ):
     try:
         provider_collection = ProviderCollection()
-        insert_id = await provider_collection.create_provider(provider_details=provider_details)
+        insert_id = await provider_collection.create_provider(provider_details=provider_details, username=current_user.username)
 
         return { "InternalResponseCode": 0, "Message": "provider successfully created", "data": str(insert_id) } if insert_id else { "InternalResponseCode": 1, "Message": "provider not created", "data": None }
 

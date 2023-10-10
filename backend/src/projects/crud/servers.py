@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from db.mongo.collections import SERVERS
 from db.mongo.mongo_base import MongoBase
 from master.models.master import BaseIsCreated
+from .providers import ProviderCollection
 from ..models.servers import (
     ServerCreateBaseModel,
     ServerCreateModel,
@@ -23,13 +24,20 @@ class ServerCollection:
         username: str
     ) -> any:
         try:
+            provider_collection = ProviderCollection()
+            provider = await provider_collection.get_provider_by_code(provider_code=username)
+            if provider is None:
+                return None
+
             existing_server = await self.get_server_by_code(server_code=server_details.server_code)
             if existing_server is not None:
                 return None
 
             server_details_full = ServerCreateModel(
                 **server_details.dict(),
-                created_by = username
+                created_by = username,
+                provider_code = provider.provider_code,
+                provider_name = provider.provider_name
             )
 
             insert_id = await self.collection.insert_one(

@@ -170,3 +170,20 @@ async def report_job_ill_defined(
 
     except Exception:
         raise HTTPException(status_code=500, detail="Something went wrong")
+
+
+@router.get(
+    "/v1/jobs/find_server_for_job",
+    dependencies=[Security(get_current_active_user, scopes=["loggedin:write"])],
+)
+async def find_server_for_job(
+    job_code: str
+):
+    try:
+        job_collection = JobCollection()
+        server_details = await job_collection.find_server_for_job(job_code=job_code)
+
+        return { "InternalResponseCode": 0, "Message": "server found", "data": server_details } if server_details is not None else { "InternalResponseCode": 1, "Message": "server not found", "data": None }
+
+    except Exception:
+        raise HTTPException(status_code=500, detail="Something went wrong")

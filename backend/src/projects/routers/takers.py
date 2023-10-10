@@ -12,14 +12,15 @@ router = APIRouter()
 
 @router.post(
     "/v1/takers/create_taker",
-    dependencies=[Security(get_current_active_user, scopes=["admin:write"])],
+    dependencies=[Security(get_current_active_user, scopes=["loggedin:write"])],
 )
 async def create_taker(
-    taker_details: TakerCreateBaseModel
+    taker_details: TakerCreateBaseModel,
+    current_user: str = Security(get_current_active_user, scopes=["loggedin:write"])
 ):
     try:
         taker_collection = TakerCollection()
-        insert_id = await taker_collection.create_taker(taker_details=taker_details)
+        insert_id = await taker_collection.create_taker(taker_details=taker_details, username=current_user.username)
 
         return { "InternalResponseCode": 0, "Message": "taker successfully created", "data": str(insert_id) } if insert_id else { "InternalResponseCode": 1, "Message": "taker not created", "data": None }
 

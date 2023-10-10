@@ -5,12 +5,14 @@ from fastapi import HTTPException
 from db.mongo.collections import JOBS
 from db.mongo.mongo_base import MongoBase
 from master.models.master import BaseIsCreated
+from .takers import TakerCollection
 from ..models.jobs import (
     JobCreateBaseModel,
     JobCreateModel,
     JobModelOut
 )
-
+from .servers import ServerCollection
+from .providers import ProviderCollection
 class JobCollection:
     def __init__(self):
         self.collection = MongoBase()
@@ -23,13 +25,20 @@ class JobCollection:
         username: str
     ) -> any:
         try:
+            taker_collection = TakerCollection()
+            taker = await taker_collection.get_taker_by_code(taker_code=username)
+            if taker is None:
+                return None
+
             existing_job = await self.get_job_by_code(job_code=job_details.job_code)
             if existing_job is not None:
                 return None
 
             job_details_full = JobCreateModel(
                 **job_details.dict(),
-                created_by = username
+                created_by = username,
+                taker_code = taker.taker_code,
+                taker_name = taker.taker_name
             )
 
             insert_id = await self.collection.insert_one(
@@ -268,5 +277,31 @@ class JobCollection:
             )
 
             return updated_job if updated_job else None
+        except Exception:
+            raise HTTPException(status_code=500, detail="Something went wrong")
+
+
+    async def find_server_for_job(
+            self,
+            job_code: str
+    ) -> any:
+        try:
+            job = await self.get_job_by_code(job_code=job_code)
+            if job is None:
+                return None
+
+            server_collection = ServerCollection()
+            servers = await server_collection.get_all_available_servers()
+            filtered_servers = [server for server in servers if job.req_memory <= server.memory_gb and job.req_cores <= server.num_cores and job.req_bandwidth <= server.bandwidth_gbps]
+            if len(filtered_servers) == 0:
+                return None
+
+            server = filtered_servers[0]
+            provider_collection = ProviderCollection()
+            provider = await provider_collection.get_provider_by_code(provider_code=server.provider_code)
+            if provider is None:
+                return None
+
+            return {server: server, provider: provider}
         except Exception:
             raise HTTPException(status_code=500, detail="Something went wrong")

@@ -19,13 +19,15 @@ class TakerCollection:
     async def create_taker(
         self,
         taker_details: TakerCreateBaseModel,
+        username: str
     ) -> any:
         try:
-            existing_taker = await self.get_taker_by_code(taker_code=taker_details.taker_code)
+            existing_taker = await self.get_taker_by_code(taker_code=username)
             if existing_taker is not None:
                 return None
 
             taker_details_full = TakerCreateModel(
+                taker_code=username,
                 **taker_details.dict()
             )
 
