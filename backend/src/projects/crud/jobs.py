@@ -302,6 +302,6 @@ class JobCollection:
             if provider is None:
                 return None
 
-            return {server: server, provider: provider}
+            return {"server": server, "provider": provider}
         except Exception:
             raise HTTPException(status_code=500, detail="Something went wrong")

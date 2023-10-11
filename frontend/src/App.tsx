@@ -7,10 +7,12 @@ import {
   createProvider,
   createTaker
 } from "./api/api";
+
 import Landing from "./components/Landing";
 import Servers from "./components/Servers";
 import Jobs from "./components/Jobs";
 import ListServer from "./components/ListServer";
+import UseServer from "./components/UseServer";
 
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
@@ -150,6 +152,7 @@ const Content: FC = () => {
             <Route path="/servers" element={<Servers bearer={bearer} guestBearer={guestBearer} loginKey={loginKey}/>} />
             <Route path="/jobs" element={<Jobs bearer={bearer} guestBearer={guestBearer} loginKey={loginKey}/>} />
             <Route path="/listserver" element={<ListServer bearer={bearer} guestBearer={guestBearer} loginKey={loginKey}/>} />
+            <Route path="/useserver" element={<UseServer bearer={bearer} guestBearer={guestBearer} loginKey={loginKey}/>} />
           </Routes>
         </Router>
     </div>

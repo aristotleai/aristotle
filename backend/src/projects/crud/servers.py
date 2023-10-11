@@ -153,3 +153,22 @@ class ServerCollection:
             return updated_server if updated_server else None
         except Exception:
             raise HTTPException(status_code=500, detail="Something went wrong")
+
+
+    async def get_all_available_servers(
+            self
+    ) -> any:
+        try:
+            filter_condition = {"is_deleted": False, "is_available": True}
+
+            sort = [("created_at", -1)]
+            data = await self.collection.find(
+                finder=filter_condition,
+                return_doc_id=True,
+                sort=sort,
+                extended_class_model=ServerModelOut,
+            )
+
+            return data if data else []
+        except Exception:
+            raise HTTPException(status_code=500, detail="Something went wrong")

@@ -157,5 +157,9 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Provide Server',
     href: "/listserver"
+  },
+  {
+    label: 'Use Server',
+    href: "/useserver"
   }
 ];

@@ -35,7 +35,8 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 origins = [
     "http://localhost:*",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://www.aristotle-ai.com"
 ]
 
 app.add_middleware(

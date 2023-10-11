@@ -204,7 +204,7 @@ export const changeServerAvailability = async (bearerToken: string, serverCode: 
 
 
 export const findServerForJob = async (bearerToken: string, jobCode: string) => {
-    const api_call: string = `${BASEURL}/servers/find_server_for_job?job_code=${jobCode}`
+    const api_call: string = `${BASEURL}/jobs/find_server_for_job?job_code=${jobCode}`
     const config = {
         headers: {
             'Authorization': `Bearer ${bearerToken}`,

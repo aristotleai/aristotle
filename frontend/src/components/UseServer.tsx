@@ -62,6 +62,8 @@ const UseServer: React.FC<{
     const [reqBandwidth, setReqBandwidth] = useState(0);
     const [reqServerTime, setReqServerTime] = useState(0);
     const [serverDetails, setServerDetails] = useState({} as any);
+    const [isInitiated, setIsInitiated] = useState(false);
+    const [file, setFile] = useState({} as any);
 
     const possibleMemoryGB = [1, 2, 4, 8, 16];
     const possibleNumCores = [1, 2, 4, 8, 16];
@@ -75,12 +77,17 @@ const UseServer: React.FC<{
         }
         createJob(bearer, jobCode, jobName, description, "", reqMemory, reqCores, reqBandwidth, reqServerTime)
         .then((response: any) => {
-            console.log(response.data.job_code)
             notifySuccess();
-            findServerForJob(bearer, response.data.job_code)
+            findServerForJob(bearer, jobCode)
             .then((response: any) => {
                 console.log(response.data)
-                setServerDetails(response.data);
+                if(response.data.data){
+                setIsInitiated(true);
+                setServerDetails(response.data.data);
+                }
+                else{
+                    notifyFailure();
+                }
             }
             ).catch((err: any) => {
                 console.error(err);
@@ -93,7 +100,52 @@ const UseServer: React.FC<{
         });
     }
 
+    const handleSubmit2 = (event: any) => {
+        event.preventDefault();
+        setFile(event.target.files[0]);
+        notifySuccess();
+    }
+        
     return (
+        isInitiated ? 
+        <Container maxW={"5xl"} p={2} pt={{base: 10, sm: 20}}>
+        <Flex
+        align={'center'}
+        justify={'center'}>
+          <Box
+            rounded={'lg'}
+            bg={useColorModeValue('white', 'gray.700')}
+            boxShadow={'lg'}
+            p={8}
+            maxW={"660px"}>
+                <Heading
+                    fontWeight={600}
+                    fontSize={{ base: "xl", sm: "xl", md: "4xl" }}
+                    lineHeight={"110%"}
+                    color={m_SectionHeadingColor}
+                    pt={5}>
+                        Submit Data and Model
+                </Heading>
+                <Text
+                    fontSize={{ base: "lg", sm: "lg", md: "lg" }}
+                    pt={5}>
+                        Upload a csv file with your model and data. The file will be encrypted with your assigned provider's Public Key and stored.
+                </Text>
+                <Text
+                    fontSize={{ base: "lg", sm: "lg", md: "lg" }}
+                    pt={5}>
+                        Assigned Provider: {serverDetails.provider.provider_name}
+                        Usage fees: $ {serverDetails.server.usage_fees/10000} / hour
+                </Text>
+            <Stack spacing={4} pt={10}>
+                <Input type="file" onChange={handleSubmit2}/>
+              <Stack spacing={10} pt={2}>
+              </Stack>
+            </Stack>
+          </Box>
+      </Flex>
+      </Container>
+            :
         <Container maxW={"5xl"} p={2} pt={{base: 10, sm: 20}}>
         <Flex
         align={'center'}

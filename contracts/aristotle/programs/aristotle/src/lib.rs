@@ -5,7 +5,7 @@ pub mod instructions;
 pub mod state;
 pub mod errors;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("bipJ9KDH5c6hmU9HKQCGq7ejbWTwzhoczhyTkRcWjXr");
 
 #[program]
 pub mod aristotle {
