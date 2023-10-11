@@ -90,7 +90,7 @@ const ListServer: React.FC<{
           <Box
             rounded={'lg'}
             bg={"white"}
-            opacity={0.65}
+            opacity={0.75}
             boxShadow={'lg'}
             p={8}
             maxW={"660px"}>

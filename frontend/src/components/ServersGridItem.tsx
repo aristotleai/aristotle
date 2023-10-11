@@ -57,7 +57,7 @@ const ServersGridItem: React.FC<{
               {server.num_cores} Cores
             </ListItem>
             <ListItem color={m_BigCardTextColour} fontSize={'md'}>
-              {server.memory} GB RAM
+              {server.memory_gb} GB RAM
             </ListItem>
             <ListItem color={m_BigCardTextColour} fontSize={'md'}>
               {server.bandwidth_gbps} GBPS Network
@@ -72,6 +72,7 @@ const ServersGridItem: React.FC<{
             rounded={'xl'}
             _hover={{
               bg: m_AppBgColor,
+              cursor: "default"
             }}
             _focus={{
               bg: m_AppBgColor,

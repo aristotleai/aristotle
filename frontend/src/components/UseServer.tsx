@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Box, SimpleGrid, Stack, Text, Container, Flex } from "@chakra-ui/react";
 import ServersGridItem from "./ServersGridItem";
 import { m_NormalTextColor, m_SectionHeadingColor, m_CardBgColor } from "../Constants";
@@ -29,6 +30,8 @@ const UseServer: React.FC<{
     guestBearer,
     loginKey
 }) => {
+    const navigate = useNavigate();
+
     const notifySuccess = () => {
         toast.success('Job Created!', {
             position: "top-center",
@@ -41,6 +44,20 @@ const UseServer: React.FC<{
             theme: "dark",
         });
     }
+
+    const notifyFileSuccess = () => {
+        toast.success('File Uploaded! Please wait for the job to be completed!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "dark",
+            progress: undefined,
+        });
+    }
+
     const notifyFailure = () => {
         toast.error('Job Creation Failed! Please try again after some time!', {
             position: "top-center",
@@ -103,7 +120,8 @@ const UseServer: React.FC<{
     const handleSubmit2 = (event: any) => {
         event.preventDefault();
         setFile(event.target.files[0]);
-        notifySuccess();
+        notifyFileSuccess();
+        navigate("/jobs");
     }
         
     return (
@@ -135,7 +153,6 @@ const UseServer: React.FC<{
                     fontSize={{ base: "lg", sm: "lg", md: "lg" }}
                     pt={5}>
                         Assigned Provider: {serverDetails.provider.provider_name}
-                        Usage fees: $ {serverDetails.server.usage_fees/10000} / hour
                 </Text>
             <Stack spacing={4} pt={10}>
                 <Input type="file" onChange={handleSubmit2}/>
@@ -153,6 +170,7 @@ const UseServer: React.FC<{
           <Box
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
+            opacity={0.75}
             boxShadow={'lg'}
             p={8}
             maxW={"660px"}>

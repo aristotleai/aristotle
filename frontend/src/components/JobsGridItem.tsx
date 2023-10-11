@@ -91,8 +91,13 @@ const JobsGridItem: React.FC<{
               rounded={'full'}
               bg={m_SectionHeadingColor}
               color={'white'}
+              _hover={{
+                bg: m_SectionHeadingColor,
+                cursor: "default"
+              }}
               _focus={{
                 bg: m_SectionHeadingColor,
+                cursor: "default"
               }}>
               {job.is_open ? "Open" : "Closed"}
             </Button>
