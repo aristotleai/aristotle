@@ -1,4 +1,5 @@
 # Aristotle AI
+## Democratizing AI through Blockchain. Decentralized provision of servers for AI / GenAI model training ensuring transparency, efficiency, fairness and social good.
 
 TODO:
 1. Connect client to the smart contract escrow
