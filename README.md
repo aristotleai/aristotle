@@ -5,6 +5,7 @@ TODO:
 1. Connect client to the smart contract escrow
 2. Direct integration with servers for permissionless server usage for complete security
 
+Submission to HYPERDRIVE HACKATHON:
 There are three segments to the code repo
 1. /contracts
 Contains the Solana smart contract that governs Aristotle AI. Features implemented:
